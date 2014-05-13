@@ -11,6 +11,10 @@ public class AssemblyOrderModel extends AbstractModel<AssemblyOrderEntity> {
 
     private static final int DEFAULT_DEADLINEDAYS = 14;
 
+    public AssemblyOrderModel() {
+        super(AssemblyOrderEntity.class);
+    }
+
     public AssemblyOrderEntity createOrder(ElementEntity elementEntity, Calendar deadlineDate, Calendar orderDate) {
         AssemblyOrderEntity entity = new AssemblyOrderEntity();
         entity.setElement(elementEntity);

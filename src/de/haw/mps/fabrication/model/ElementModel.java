@@ -15,6 +15,10 @@ import java.util.Set;
  */
 public class ElementModel extends AbstractModel<ElementEntity> {
 
+    public ElementModel() {
+        super(ElementEntity.class);
+    }
+
     public ElementEntity createElement(String name, AssemblyPlanEntity assemblyPlan) {
         ElementEntity entity = new ElementEntity();
         entity.setName(name);

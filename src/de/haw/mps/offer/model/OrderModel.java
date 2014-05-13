@@ -14,6 +14,10 @@ public class OrderModel extends AbstractModel<OrderEntity> {
     private static final int DEFAULT_INVOIDEDAYS = 35;
     private static final int DEFAULT_SHIPPINGDAYS = 20;
 
+    public OrderModel() {
+        super(OrderEntity.class);
+    }
+
     public OrderEntity createOrder(Set<OfferEntity> offers, Calendar orderDate, Calendar shippingDate, Calendar invoiceDate) {
         OrderEntity entity = new OrderEntity();
         entity.setOffers(offers);

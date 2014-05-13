@@ -5,6 +5,10 @@ import de.haw.mps.persistence.AbstractModel;
 
 public class CustomerModel extends AbstractModel<CustomerEntity> {
 
+    public CustomerModel() {
+        super(CustomerEntity.class);
+    }
+
     public CustomerEntity createCustomer(String name) {
         CustomerEntity entity = new CustomerEntity();
         entity.setName(name);

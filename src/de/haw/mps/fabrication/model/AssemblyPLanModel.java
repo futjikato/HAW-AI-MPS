@@ -14,6 +14,10 @@ import java.util.Set;
  */
 public class AssemblyPLanModel extends AbstractModel<AssemblyPlanEntity> {
 
+    public AssemblyPLanModel() {
+        super(AssemblyPlanEntity.class);
+    }
+
     public AssemblyPlanEntity createPlan(ElementEntity baseElement, Set<ElementEntity> constructionParts) {
         AssemblyPlanEntity entity = new AssemblyPlanEntity();
         entity.setBaseElement(baseElement);
