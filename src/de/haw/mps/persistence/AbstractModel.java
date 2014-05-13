@@ -9,13 +9,15 @@ import java.io.Serializable;
 public abstract class AbstractModel<T extends Serializable> {
 
     public boolean add(T entity) {
+        Session session = MpsSessionFactory.getcurrentSession();
+        Transaction transaction = session.beginTransaction();
+
         try {
-            Session session = MpsSessionFactory.getcurrentSession();
-            Transaction transaction = session.beginTransaction();
             session.save(entity);
             transaction.commit();
             return true;
         } catch (Exception e) {
+            transaction.rollback();
             MpsLogger.handleException(e);
             return false;
         }

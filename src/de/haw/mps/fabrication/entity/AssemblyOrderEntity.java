@@ -20,7 +20,7 @@ public class AssemblyOrderEntity implements Serializable {
     @GenericGenerator(name = "idGen", strategy = "increment")
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, optional = false)
     @Cascade({ CascadeType.ALL })
     private ElementEntity element;
 

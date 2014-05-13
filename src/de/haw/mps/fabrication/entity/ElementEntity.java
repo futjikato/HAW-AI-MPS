@@ -5,17 +5,18 @@ import org.hibernate.annotations.Table;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
+import java.io.Serializable;
 
 @Entity(name = "Element")
 @Table(appliesTo = "Element")
-public class ElementEntity {
+public class ElementEntity implements Serializable {
 
     @Id
     @GeneratedValue
     @GenericGenerator(name = "idGen", strategy = "increment")
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, optional = true)
     @Cascade({ org.hibernate.annotations.CascadeType.ALL })
     private AssemblyPlanEntity plan;
 

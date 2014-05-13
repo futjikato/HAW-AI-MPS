@@ -1,6 +1,7 @@
 package de.haw.maps.test.model;
 
 import de.haw.mps.persistence.AbstractModel;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.Serializable;
@@ -16,7 +17,9 @@ public abstract class ModelTestBase {
         AbstractModel model = getModel();
         Serializable serializable = getEntity();
 
-        model.add(serializable);
+        boolean succ = model.add(serializable);
+
+        Assert.assertTrue(succ);
     }
 
 }
