@@ -8,6 +8,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Table;
 
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 
 @Entity(name = "AssemblyOrder")
 @Table(appliesTo = "AssemblyOrder")
@@ -18,30 +20,41 @@ public class AssemblyOrderEntity implements Serializable {
     @GenericGenerator(name = "idGen", strategy = "increment")
     private Long id;
 
-    @Column(nullable = false)
-    private String street;
-
     @OneToOne(fetch = FetchType.EAGER)
     @Cascade({ CascadeType.ALL })
-    private Element element;
+    private ElementEntity element;
+
+    @Column(nullable = false)
+    private Calendar orderDate;
+
+    @Column(nullable = false)
+    private Calendar deadlineDate;
 
     public Long getId() {
         return id;
     }
 
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public Element getElement() {
+    public ElementEntity getElement() {
         return element;
     }
 
-    public void setElement(Element element) {
+    public void setElement(ElementEntity element) {
         this.element = element;
+    }
+
+    public Calendar getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(Calendar orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public Calendar getDeadlineDate() {
+        return deadlineDate;
+    }
+
+    public void setDeadlineDate(Calendar deadlineDate) {
+        this.deadlineDate = deadlineDate;
     }
 }
