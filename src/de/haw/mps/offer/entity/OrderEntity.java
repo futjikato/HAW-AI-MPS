@@ -66,4 +66,8 @@ public class OrderEntity implements Serializable {
     public void setInvoiceDate(Calendar invoiceDate) {
         this.invoiceDate = invoiceDate;
     }
+
+    public void addOffer(OfferEntity offer) {
+        this.offers.add(offer);
+    }
 }

@@ -20,9 +20,9 @@ public class OfferEntity implements Serializable {
     @Cascade({ org.hibernate.annotations.CascadeType.ALL })
     private CustomerEntity customer;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = true)
+    @OneToMany(fetch = FetchType.LAZY)
     @Cascade({ org.hibernate.annotations.CascadeType.ALL })
-    private OfferEntity resultingOffer;
+    private OrderEntity resultingOrder;
 
     public Long getId() {
         return id;
@@ -36,11 +36,11 @@ public class OfferEntity implements Serializable {
         this.customer = customer;
     }
 
-    public OfferEntity getResultingOffer() {
-        return resultingOffer;
+    public OrderEntity getResultingOrder() {
+        return resultingOrder;
     }
 
-    public void setResultingOffer(OfferEntity resultingOffer) {
-        this.resultingOffer = resultingOffer;
+    public void setResultingOrder(OrderEntity resultingOffer) {
+        this.resultingOrder = resultingOffer;
     }
 }
