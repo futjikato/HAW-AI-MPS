@@ -34,6 +34,10 @@ public class AssemblyPlanEntity implements Serializable {
 
     public void setBaseElement(ElementEntity baseElement) {
         this.baseElement = baseElement;
+
+        if(baseElement.getPlan() == null) {
+            baseElement.setPlan(this);
+        }
     }
 
     public Set<ElementEntity> getComponents() {

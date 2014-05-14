@@ -1,15 +1,21 @@
-package de.haw.maps.test.model;
+package de.haw.mps.test.model;
 
 import de.haw.mps.fabrication.entity.AssemblyOrderEntity;
 import de.haw.mps.fabrication.entity.ElementEntity;
 import de.haw.mps.fabrication.model.AssemblyOrderModel;
+import de.haw.mps.fabrication.model.ElementModel;
 import de.haw.mps.persistence.AbstractModel;
+import de.haw.mps.persistence.MpsSessionFactory;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  * @author moritzspindelhirn
@@ -47,5 +53,34 @@ public class AssemblyOrderModelTest extends ModelTestBase {
 
         boolean succ = model.add(orderEntity);
         Assert.assertFalse(succ);
+    }
+
+    @Test
+    public void testCreate() {
+        // create element
+        ElementModel elementModel = new ElementModel();
+        ElementEntity elementEntity = elementModel.createElement("JUnit AssemblyOrderModelTest:testCreate");
+
+        // create order
+        AssemblyOrderModel model = new AssemblyOrderModel();
+        AssemblyOrderEntity entity = model.createOrder(elementEntity);
+
+        // get session
+        Session session = MpsSessionFactory.getcurrentSession();
+
+        // save order
+        Transaction t = session.beginTransaction();
+        session.save(entity);
+        t.commit();
+
+
+        // fetch element with unit test name
+        session = MpsSessionFactory.getcurrentSession();
+        Transaction t1 = session.beginTransaction();
+        List elementEntities = session.createCriteria(ElementEntity.class)
+                                      .add(Restrictions.eq("name", "JUnit AssemblyOrderModelTest:testCreate"))
+                                      .list();
+        Assert.assertEquals(1, elementEntities.size());
+        t1.commit();
     }
 }

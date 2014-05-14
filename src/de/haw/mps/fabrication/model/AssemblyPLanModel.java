@@ -12,9 +12,9 @@ import java.util.Set;
  * @todo Documentation
  * @category de.haw.mps.fabrication.model
  */
-public class AssemblyPLanModel extends AbstractModel<AssemblyPlanEntity> {
+public class AssemblyPlanModel extends AbstractModel<AssemblyPlanEntity> {
 
-    public AssemblyPLanModel() {
+    public AssemblyPlanModel() {
         super(AssemblyPlanEntity.class);
     }
 

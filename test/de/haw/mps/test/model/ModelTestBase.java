@@ -1,4 +1,4 @@
-package de.haw.maps.test.model;
+package de.haw.mps.test.model;
 
 import de.haw.mps.persistence.AbstractModel;
 import org.junit.Assert;

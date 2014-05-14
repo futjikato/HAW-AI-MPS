@@ -16,7 +16,10 @@ public abstract class AbstractModel<T extends Serializable> {
 
     public boolean add(T entity) {
         Session session = MpsSessionFactory.getcurrentSession();
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction = session.getTransaction();
+        if(transaction == null || !transaction.isActive()) {
+            transaction = session.beginTransaction();
+        }
 
         try {
             session.save(entity);

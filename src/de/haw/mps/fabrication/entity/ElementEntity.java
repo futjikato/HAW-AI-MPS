@@ -1,5 +1,6 @@
 package de.haw.mps.fabrication.entity;
 
+import de.haw.mps.persistence.MpsSessionFactory;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.Table;
 
@@ -33,6 +34,10 @@ public class ElementEntity implements Serializable {
 
     public void setPlan(AssemblyPlanEntity plan) {
         this.plan = plan;
+
+        if(plan.getBaseElement() == null) {
+            plan.setBaseElement(this);
+        }
     }
 
     public String getName() {
