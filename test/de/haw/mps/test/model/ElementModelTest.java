@@ -10,15 +10,17 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * JUnit Tests for Element creation / updates.
+ * Also contains a test which checks if AssemblyPlan creating and association works as expected.
+ */
 public class ElementModelTest extends ModelTestBase {
-
 
     @Override
     protected AbstractModel getModel() {
