@@ -31,6 +31,7 @@ public class ResponseSerializer {
         // write response code
         dos.writeInt(responseCode);
 
+        dos.writeInt(data.length);
         for(String param : data) {
             dos.writeInt(param.length());
             dos.write(param.getBytes());

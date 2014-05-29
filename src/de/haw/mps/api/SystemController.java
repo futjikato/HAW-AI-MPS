@@ -1,6 +1,5 @@
 package de.haw.mps.api;
 
-import java.util.Date;
 
 public final class SystemController extends ActionController {
 
@@ -21,7 +20,7 @@ public final class SystemController extends ActionController {
 
                     @Override
                     public String[] getData() {
-                        return new String[] {"pong", new Date().toString()};
+                        return new String[] {"pong", String.valueOf(System.currentTimeMillis())};
                     }
                 };
             }

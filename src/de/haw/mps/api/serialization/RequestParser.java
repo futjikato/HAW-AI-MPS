@@ -39,7 +39,11 @@ public class RequestParser {
 
     private String readStr() throws IOException {
         int stringLength = reader.readInt();
-        MpsLogger.getLogger().log(Level.INFO, String.format("[REQUEST] - String length %d", stringLength));
+
+        if(stringLength > 500) {
+            throw new RuntimeException("String parameter length limit of 500 exceeded.");
+        }
+
         byte[] strBytes = new byte[stringLength];
         reader.read(strBytes);
         return new String(strBytes);
