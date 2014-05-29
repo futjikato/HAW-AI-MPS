@@ -6,6 +6,6 @@ public interface Response {
 
     public Client getSender();
 
-    public Object getData();
+    public String[] getData();
 
 }

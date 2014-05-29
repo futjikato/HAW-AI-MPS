@@ -8,6 +8,8 @@ public abstract class Request {
 
     public abstract String requestedAction();
 
+    public abstract String[] getParameters();
+
     public void setResponse(Response response) {
         this.response = response;
         synchronized (this) {

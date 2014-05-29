@@ -13,4 +13,18 @@ public enum ResponseCode {
     ResponseCode(int num) {
         this.num = num;
     }
+
+    public int getCode() {
+        return num;
+    }
+
+    public ResponseCode getByCode(int num) {
+        for(ResponseCode code : values()) {
+            if(code.getCode() == num) {
+                return code;
+            }
+        }
+
+        return null;
+    }
 }

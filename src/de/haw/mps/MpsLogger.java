@@ -1,7 +1,5 @@
 package de.haw.mps;
 
-import sun.util.logging.resources.logging;
-
 import java.util.logging.Logger;
 
 public final class MpsLogger {

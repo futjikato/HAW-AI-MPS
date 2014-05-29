@@ -1,5 +1,7 @@
 package de.haw.mps.api;
 
+import java.util.Date;
+
 public final class SystemController extends ActionController {
 
     public enum SystemActions {
@@ -18,8 +20,8 @@ public final class SystemController extends ActionController {
                     }
 
                     @Override
-                    public Object getData() {
-                        return "pong";
+                    public String[] getData() {
+                        return new String[] {"pong", new Date().toString()};
                     }
                 };
             }

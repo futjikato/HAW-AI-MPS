@@ -1,9 +1,13 @@
 package de.haw.mps.api;
 
-public interface Client {
+import java.net.Socket;
 
-    public String getHostname();
+public class Client {
 
-    public int getPort();
+    private Socket socket;
+
+    public Client(Socket socket) {
+        this.socket = socket;
+    }
 
 }

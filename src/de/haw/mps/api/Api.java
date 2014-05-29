@@ -17,7 +17,7 @@ public final class Api {
         actionHub.addObserver(systemController);
     }
 
-    public Api getInstance() {
+    public static Api getInstance() {
         if(instance == null) {
             instance = new Api();
         }
@@ -26,34 +26,8 @@ public final class Api {
     }
 
     public Response processRequest(final Request request) throws ProcessException {
-        Api.this.actionHub.queueRequest(request);
+        actionHub.queueRequest(request);
 
-        synchronized (request) {
-            try {
-                request.wait();
-            } catch (InterruptedException e) {
-                // write exception into log file
-                MpsLogger.handleException(e);
-                // return error response
-                return new Response() {
-                    @Override
-                    public ResponseCode getResponseCode() {
-                        return ResponseCode.ERROR;
-                    }
-
-                    @Override
-                    public Client getSender() {
-                        return request.getClient();
-                    }
-
-                    @Override
-                    public Object getData() {
-                        return null;
-                    }
-                };
-            }
-
-            return request.getResponse();
-        }
+        return request.getResponse();
     }
 }
