@@ -6,6 +6,7 @@ public enum ResponseCode {
     ALREADYDONE(208),
     NOTFOUND(404),
     FORBIDDEN(403),
+    BADREQUEST(400),
     ERROR(500);
 
     private int num;

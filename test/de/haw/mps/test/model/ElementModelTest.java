@@ -6,6 +6,7 @@ import de.haw.mps.fabrication.model.AssemblyPlanModel;
 import de.haw.mps.fabrication.model.ElementModel;
 import de.haw.mps.persistence.AbstractModel;
 import de.haw.mps.persistence.MpsSessionFactory;
+import de.haw.mps.persistence.WorkflowException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
@@ -65,21 +66,50 @@ public class ElementModelTest extends ModelTestBase {
     public void testCreateWithPlan() {
         // prep
         ElementModel elementModel = new ElementModel();
+        // start new session
+        elementModel.startTransaction();
         ElementEntity part1 = elementModel.createElement("JUnit ElementModelTest:testCreateWithPlan sub1");
         ElementEntity part2 = elementModel.createElement("JUnit ElementModelTest:testCreateWithPlan sub2");
-        elementModel.add(part1);
-        elementModel.add(part2);
+        try {
+            elementModel.add(part1);
+            elementModel.add(part2);
+        } catch (WorkflowException e) {
+            e.printStackTrace();
+            Assert.fail();
+            return;
+        }
+
 
         ElementEntity elementEntity = elementModel.createElement("JUnit ElementModelTest:testCreateWithPlan main");
-        elementModel.add(elementEntity);
+        try {
+            elementModel.add(elementEntity);
+        } catch (WorkflowException e) {
+            e.printStackTrace();
+            Assert.fail();
+            return;
+        }
 
         AssemblyPlanModel planModel = new AssemblyPlanModel();
         HashSet<ElementEntity> entities = new HashSet<ElementEntity>();
         entities.add(part1);
         entities.add(part2);
         AssemblyPlanEntity planEntity = planModel.createPlan(elementEntity, entities);
-        planModel.add(planEntity);
-        elementModel.update(elementEntity);
+        try {
+            planModel.add(planEntity);
+            elementModel.update(elementEntity);
+        } catch (WorkflowException e) {
+            e.printStackTrace();
+            Assert.fail();
+            return;
+        }
+
+        try {
+            elementModel.commitTransaction();
+        } catch (WorkflowException e) {
+            e.printStackTrace();
+            Assert.fail();
+            return;
+        }
 
         // load
         Session session = MpsSessionFactory.getcurrentSession();

@@ -6,6 +6,7 @@ import de.haw.mps.fabrication.model.AssemblyOrderModel;
 import de.haw.mps.fabrication.model.ElementModel;
 import de.haw.mps.persistence.AbstractModel;
 import de.haw.mps.persistence.MpsSessionFactory;
+import de.haw.mps.persistence.WorkflowException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
@@ -51,7 +52,14 @@ public class AssemblyOrderModelTest extends ModelTestBase {
         orderEntity.setOrderDate(new GregorianCalendar(2014, 5, 10));
         orderEntity.setDeadlineDate(new GregorianCalendar(2014, 5, 14));
 
-        boolean succ = model.add(orderEntity);
+        boolean succ = false;
+        try {
+            model.startTransaction();
+            succ = model.add(orderEntity);
+            model.commitTransaction();
+        } catch (WorkflowException e) {
+            Assert.fail();
+        }
         Assert.assertFalse(succ);
     }
 

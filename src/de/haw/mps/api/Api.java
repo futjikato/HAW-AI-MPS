@@ -28,6 +28,22 @@ public final class Api {
     public Response processRequest(final Request request) throws ProcessException {
         actionHub.queueRequest(request);
 
-        return request.getResponse();
+        Response response = request.getResponse();
+
+        if(response == null) {
+            return new Response() {
+                @Override
+                public ResponseCode getResponseCode() {
+                    return ResponseCode.ERROR;
+                }
+
+                @Override
+                public String[] getData() {
+                    return new String[]{"Invalid Action / No Controller for action responded."};
+                }
+            };
+        }
+
+        return response;
     }
 }

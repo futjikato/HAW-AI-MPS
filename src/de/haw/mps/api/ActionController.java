@@ -15,6 +15,20 @@ public abstract class ActionController implements Observer {
         }
     }
 
+    public static Response createResponse(final ResponseCode responseCode, final String[] data) {
+        return new Response() {
+            @Override
+            public ResponseCode getResponseCode() {
+                return responseCode;
+            }
+
+            @Override
+            public String[] getData() {
+                return data;
+            }
+        };
+    }
+
     public abstract boolean liableForAction(String action);
 
     public abstract void process(Request request);

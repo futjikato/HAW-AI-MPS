@@ -2,3 +2,5 @@ out/*
 .idea
 lib
 src/hibernate.cfg.xml
+*.log
+.DS_Store

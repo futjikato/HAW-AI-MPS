@@ -34,7 +34,7 @@ public class TcpServer extends Thread {
             }
         } catch (IOException e) {
             interrupt();
-            MpsLogger.handleException(e);
+            MpsLogger.getLogger().severe(e.getMessage());
         }
     }
 
@@ -48,17 +48,13 @@ public class TcpServer extends Thread {
                     Request request = RequestParser.parse(new Client(clientSocket), clientSocket.getInputStream());
                     Api api = Api.getInstance();
                     Response response = api.processRequest(request);
-                    int bytesWrote = ResponseSerializer.write(clientSocket.getOutputStream(), response);
-
-                    MpsLogger.getLogger().log(Level.INFO, String.format("Wrote response to client. Bytestreamsize: %d", bytesWrote));
-
-                    clientSocket.close();
+                    ResponseSerializer.write(clientSocket.getOutputStream(), response);
                 } catch (IOException e) {
                     MpsLogger.getLogger().log(Level.SEVERE, "Dropping request because of read error. Exception follows.");
-                    MpsLogger.handleException(e);
+                    MpsLogger.getLogger().severe(e.getMessage());
                 } catch (ProcessException e) {
                     MpsLogger.getLogger().log(Level.SEVERE, "Dropping request because of processing error. Exception follows.");
-                    MpsLogger.handleException(e);
+                    MpsLogger.getLogger().severe(e.getMessage());
                 }
             }
         });
@@ -66,9 +62,9 @@ public class TcpServer extends Thread {
         try {
             future.get();
         } catch (InterruptedException e) {
-            MpsLogger.handleException(e);
+            MpsLogger.getLogger().severe(e.getMessage());
         } catch (ExecutionException e) {
-            MpsLogger.handleException(e);
+            MpsLogger.getLogger().severe(e.getMessage());
         }
     }
 }

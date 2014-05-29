@@ -14,11 +14,6 @@ public final class SystemController extends ActionController {
                     }
 
                     @Override
-                    public Client getSender() {
-                        return request.getClient();
-                    }
-
-                    @Override
                     public String[] getData() {
                         return new String[] {"pong", String.valueOf(System.currentTimeMillis())};
                     }
@@ -31,7 +26,11 @@ public final class SystemController extends ActionController {
 
     @Override
     public boolean liableForAction(String action) {
-        return (SystemActions.valueOf(action.toUpperCase()) != null);
+        try {
+            return (SystemActions.valueOf(action.toUpperCase()) != null);
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     @Override
