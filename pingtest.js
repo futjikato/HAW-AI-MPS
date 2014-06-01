@@ -22,9 +22,20 @@ client.on('data', function(buf) {
 
 	var statusCode = buf.readInt32BE(0);
 	console.log('Status ', statusCode);
-	
-	var paramCount = buf.readInt32BE(4);
-	var offsetBase = 8; 
+
+    var offsetBase = 4;
+    var nameLength = buf.readInt32BE(offsetBase);
+    offsetBase += 4;
+
+    if(nameLength > 0) {
+        var name = buf.toString('utf8', offsetBase, offsetBase + nameLength);
+        offsetBase += nameLength;
+        console.log('Response name', name);
+    }
+
+	var paramCount = buf.readInt32BE(offsetBase);
+    offsetBase += 4;
+
 	for(var i = 0 ; i < paramCount ; i++) {
 		var strLength = buf.readInt32BE(offsetBase + (i * 4));
 		var strStart = offsetBase + (i * 4) + 4;

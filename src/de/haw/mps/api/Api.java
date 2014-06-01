@@ -1,8 +1,6 @@
 package de.haw.mps.api;
 
 
-import de.haw.mps.MpsLogger;
-
 public final class Api {
 
     private Hub actionHub;
@@ -32,6 +30,11 @@ public final class Api {
 
         if(response == null) {
             return new Response() {
+                @Override
+                public String getResponseName() {
+                    return null;
+                }
+
                 @Override
                 public ResponseCode getResponseCode() {
                     return ResponseCode.ERROR;

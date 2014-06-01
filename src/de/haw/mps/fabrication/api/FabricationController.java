@@ -6,6 +6,8 @@ import de.haw.mps.fabrication.entity.ElementEntity;
 import de.haw.mps.fabrication.model.ElementModel;
 import de.haw.mps.persistence.WorkflowException;
 
+import java.util.HashMap;
+
 public class FabricationController extends ActionController {
 
     public enum Actions {
@@ -34,7 +36,14 @@ public class FabricationController extends ActionController {
                     return ActionController.createResponse(ResponseCode.BADREQUEST, new String[]{"Unable to save element."});
                 }
 
-                return ActionController.createResponse(ResponseCode.OK, new String[] {String.valueOf(entity.getId())});
+                return ActionController.createResponse("NEW_ELEMENT", ResponseCode.OK, new String[] {String.valueOf(entity.getId())});
+            }
+        },
+
+        GET_ELEMENTS {
+            @Override
+            public Response process(Request request) {
+                return ActionController.createResponse(ResponseCode.BADREQUEST, new String[]{"Not yet implemented."});
             }
         };
 

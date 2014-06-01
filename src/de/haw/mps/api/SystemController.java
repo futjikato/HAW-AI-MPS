@@ -9,13 +9,18 @@ public final class SystemController extends ActionController {
             public Response process(final Request request) {
                 return new Response() {
                     @Override
+                    public String getResponseName() {
+                        return "pong";
+                    }
+
+                    @Override
                     public ResponseCode getResponseCode() {
                         return ResponseCode.OK;
                     }
 
                     @Override
                     public String[] getData() {
-                        return new String[] {"pong", String.valueOf(System.currentTimeMillis())};
+                        return new String[] {String.valueOf(System.currentTimeMillis())};
                     }
                 };
             }
@@ -35,7 +40,7 @@ public final class SystemController extends ActionController {
 
     @Override
     public void process(Request request) {
-        SystemActions action = SystemActions.valueOf(request.requestedAction());
+        SystemActions action = SystemActions.valueOf(request.requestedAction().toUpperCase());
 
         if(action == null) {
             throw new NullPointerException("Action liable but not found for processing.");

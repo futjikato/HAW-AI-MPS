@@ -45,10 +45,12 @@ public class TcpServer extends Thread {
             @Override
             public void run() {
                 try {
-                    Request request = RequestParser.parse(new Client(clientSocket), clientSocket.getInputStream());
-                    Api api = Api.getInstance();
-                    Response response = api.processRequest(request);
-                    ResponseSerializer.write(clientSocket.getOutputStream(), response);
+                    while(!isInterrupted()) {
+                        Request request = RequestParser.parse(new Client(clientSocket), clientSocket.getInputStream());
+                        Api api = Api.getInstance();
+                        Response response = api.processRequest(request);
+                        ResponseSerializer.write(clientSocket.getOutputStream(), response);
+                    }
                 } catch (IOException e) {
                     MpsLogger.getLogger().log(Level.SEVERE, "Dropping request because of read error. Exception follows.");
                     MpsLogger.getLogger().severe(e.getMessage());

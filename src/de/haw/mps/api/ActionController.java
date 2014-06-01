@@ -15,8 +15,13 @@ public abstract class ActionController implements Observer {
         }
     }
 
-    public static Response createResponse(final ResponseCode responseCode, final String[] data) {
+    public static Response createResponse(final String responseAction, final ResponseCode responseCode, final String[] data) {
         return new Response() {
+            @Override
+            public String getResponseName() {
+                return responseAction;
+            }
+
             @Override
             public ResponseCode getResponseCode() {
                 return responseCode;
@@ -27,6 +32,10 @@ public abstract class ActionController implements Observer {
                 return data;
             }
         };
+    }
+
+    public static Response createResponse(final ResponseCode responseCode, final String[] data) {
+        return createResponse(null, responseCode, data);
     }
 
     public abstract boolean liableForAction(String action);
