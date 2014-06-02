@@ -49,7 +49,7 @@ public class TcpServer extends Thread {
                         Request request = RequestParser.parse(new Client(clientSocket), clientSocket.getInputStream());
                         Api api = Api.getInstance();
                         Response response = api.processRequest(request);
-                        ResponseSerializer.write(clientSocket.getOutputStream(), response);
+                        ResponseSerializer.write(clientSocket.getOutputStream(), response, request);
                     }
                 } catch (IOException e) {
                     MpsLogger.getLogger().log(Level.SEVERE, "Dropping request because of read error. Exception follows.");

@@ -10,6 +10,8 @@ public abstract class Request {
 
     public abstract String[] getParameters();
 
+    public abstract int getUserId();
+
     public void setResponse(Response response) {
         this.response = response;
         synchronized (this) {

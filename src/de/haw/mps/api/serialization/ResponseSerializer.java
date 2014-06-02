@@ -1,5 +1,6 @@
 package de.haw.mps.api.serialization;
 
+import de.haw.mps.api.Request;
 import de.haw.mps.api.Response;
 import de.haw.mps.api.ResponseCode;
 
@@ -18,16 +19,19 @@ public class ResponseSerializer {
 
     private String responseName;
 
-    private ResponseSerializer(DataOutputStream dos, Response response) {
+    private int userIdentification;
+
+    private ResponseSerializer(DataOutputStream dos, Response response, Request request) {
         responseCode = response.getResponseCode();
         data = response.getData();
         responseName = response.getResponseName();
+        userIdentification = request.getUserId();
         this.dos = dos;
     }
 
-    public static int write(OutputStream os, Response response) throws IOException {
+    public static int write(OutputStream os, Response response, Request request) throws IOException {
         DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(os));
-        ResponseSerializer serializer = new ResponseSerializer(dos, response);
+        ResponseSerializer serializer = new ResponseSerializer(dos, response, request);
         return serializer.write();
     }
 
@@ -43,8 +47,12 @@ public class ResponseSerializer {
             dos.write(responseName.getBytes());
         }
 
-        // write parameters
+        // write user id
+        dos.writeInt(userIdentification);
+
+        // write parameters count
         dos.writeInt(data.length);
+        // write all parameters
         for(String param : data) {
             dos.writeInt(param.length());
             dos.write(param.getBytes());

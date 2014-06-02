@@ -13,6 +13,8 @@ public class RequestParser {
 
     private String actionName;
 
+    private int userIdentification;
+
     private String[] parameters;
 
     private RequestParser(DataInputStream reader) {
@@ -20,10 +22,16 @@ public class RequestParser {
     }
 
     private void readData() throws IOException {
+        // action name
         actionName = readStr();
         MpsLogger.getLogger().log(Level.INFO, String.format("[REQUEST] - Action %s", actionName));
 
+        // user id
+        userIdentification = reader.readInt();
+
+        // read parameter count
         int parameterCount = reader.readInt();
+        // read all parameters
         parameters = readParameter(parameterCount);
     }
 
@@ -68,6 +76,11 @@ public class RequestParser {
             @Override
             public String[] getParameters() {
                 return parser.parameters;
+            }
+
+            @Override
+            public int getUserId() {
+                return parser.userIdentification;
             }
         };
     }
