@@ -47,6 +47,15 @@ public final class SystemController extends ActionController {
                     return ActionController.createResponse(ResponseCode.ERROR, new String[]{msg});
                 }
             }
+        },
+
+        REQCOUNT() {
+            @Override
+            public Response process(Request request) {
+                int reqCount = request.getClient().getRequestCounter();
+                request.getClient().resetRequestCounter();
+                return ActionController.createResponse("reqcount", ResponseCode.OK, new String[]{String.valueOf(reqCount)});
+            }
         };
 
         public abstract Response process(Request request);

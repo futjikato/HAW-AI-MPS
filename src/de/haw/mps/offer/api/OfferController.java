@@ -5,6 +5,8 @@ import de.haw.mps.api.ActionController;
 import de.haw.mps.api.Request;
 import de.haw.mps.api.Response;
 import de.haw.mps.api.ResponseCode;
+import de.haw.mps.fabrication.entity.ElementEntity;
+import de.haw.mps.fabrication.model.ElementModel;
 import de.haw.mps.offer.entity.CustomerEntity;
 import de.haw.mps.offer.entity.OfferEntity;
 import de.haw.mps.offer.entity.OrderEntity;
@@ -107,6 +109,51 @@ public class OfferController extends ActionController {
                 } catch (Exception e) {
                     MpsLogger.getLogger().severe(e.getMessage());
                     return ActionController.createResponse(ResponseCode.ERROR, new String[]{"Unable to load offers."});
+                }
+            }
+        },
+
+        NEW_OFFER() {
+            @Override
+            public Response process(Request request) {
+                String[] params = request.getParameters();
+
+                if(params.length != 2) {
+                    return ActionController.createResponse(ResponseCode.BADREQUEST, new String[]{"Exactly two parameter are expected."});
+                }
+
+                String customerName = params[0];
+                String elementName = params[1];
+
+                try {
+                    // get model
+                    CustomerModel customerModel = new CustomerModel();
+                    ElementModel elementModel = new ElementModel();
+                    OfferModel offerModel = new OfferModel();
+
+                    // load objects
+                    CustomerEntity customerEntity = customerModel.getCustomerByName(customerName);
+                    ElementEntity elementEntity = elementModel.getElementByName(elementName);
+
+                    // create new offer
+                    OfferEntity newOffer = offerModel.createOffer(customerEntity, elementEntity);
+
+                    // persist entity
+                    Session session = MpsSessionFactory.getcurrentSession();
+                    Transaction transaction = session.beginTransaction();
+                    offerModel.add(newOffer);
+                    transaction.commit();
+
+                    // send response
+                    String[] responseParams = new String[]{
+                        String.valueOf(newOffer.getId()),
+                        newOffer.getCustomer().getName(),
+                        newOffer.getOrderObject().getName()
+                    };
+                    return ActionController.createResponse("new_offer", ResponseCode.OK, responseParams);
+                } catch (Exception e) {
+                    MpsLogger.getLogger().severe(e.getMessage());
+                    return ActionController.createResponse(ResponseCode.ERROR, new String[]{"Unable to load customers."});
                 }
             }
         };

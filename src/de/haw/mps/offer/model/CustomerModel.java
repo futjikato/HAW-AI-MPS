@@ -35,4 +35,25 @@ public class CustomerModel extends AbstractModel<CustomerEntity> {
         return customers;
     }
 
+    public CustomerEntity getCustomerByName(String name) {
+        Session session = MpsSessionFactory.getcurrentSession();
+        Transaction transaction = session.beginTransaction();
+
+        Criteria crit = session.createCriteria(CustomerEntity.class);
+        crit.add(Restrictions.eq("name", name));
+        List customers = crit.list();
+
+        transaction.commit();
+
+        if(customers.size() <= 0) {
+            return null;
+        } else {
+            Object object = customers.get(0);
+            if(object instanceof CustomerEntity) {
+                return (CustomerEntity)object;
+            } else {
+                return null;
+            }
+        }
+    }
 }

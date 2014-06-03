@@ -3,14 +3,15 @@ package de.haw.mps.fabrication.model;
 import de.haw.mps.fabrication.entity.AssemblyPlanEntity;
 import de.haw.mps.fabrication.entity.ElementEntity;
 import de.haw.mps.persistence.AbstractModel;
+import de.haw.mps.persistence.MpsSessionFactory;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
+import java.util.List;
 import java.util.Set;
 
-/**
- * @author moritzspindelhirn
- * @todo Documentation
- * @category de.haw.mps.fabrication.model
- */
 public class ElementModel extends AbstractModel<ElementEntity> {
 
     public ElementModel() {
@@ -43,4 +44,25 @@ public class ElementModel extends AbstractModel<ElementEntity> {
         return entity;
     }
 
+    public ElementEntity getElementByName(String name) {
+        Session session = MpsSessionFactory.getcurrentSession();
+        Transaction transaction = session.beginTransaction();
+
+        Criteria crit = session.createCriteria(ElementEntity.class);
+        crit.add(Restrictions.eq("name", name));
+        List elements = crit.list();
+
+        transaction.commit();
+
+        if(elements.size() <= 0) {
+            return null;
+        } else {
+            Object object = elements.get(0);
+            if(object instanceof ElementEntity) {
+                return (ElementEntity)object;
+            } else {
+                return null;
+            }
+        }
+    }
 }
