@@ -3,6 +3,7 @@ package de.haw.mps;
 import de.haw.mps.api.Hub;
 import de.haw.mps.api.TcpServer;
 import de.haw.mps.fabrication.api.FabricationController;
+import de.haw.mps.offer.api.OfferController;
 import de.haw.mps.persistence.MpsSessionFactory;
 import org.hibernate.Session;
 
@@ -22,6 +23,7 @@ public class Main {
 
       // Add Controllers to Api
       Hub.getInstance().addObserver(new FabricationController());
+      Hub.getInstance().addObserver(new OfferController());
   }
 
 }

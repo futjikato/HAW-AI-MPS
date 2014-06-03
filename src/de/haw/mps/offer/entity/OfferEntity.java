@@ -1,5 +1,6 @@
 package de.haw.mps.offer.entity;
 
+import de.haw.mps.fabrication.entity.ElementEntity;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Table;
@@ -16,13 +17,15 @@ public class OfferEntity implements Serializable {
     @GenericGenerator(name = "idGen", strategy = "increment")
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER, optional = false)
-    @Cascade({ org.hibernate.annotations.CascadeType.ALL })
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private CustomerEntity customer;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, optional = true)
     @Cascade({ org.hibernate.annotations.CascadeType.ALL })
     private OrderEntity resultingOrder;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    private ElementEntity orderObject;
 
     public Long getId() {
         return id;
@@ -42,5 +45,13 @@ public class OfferEntity implements Serializable {
 
     public void setResultingOrder(OrderEntity resultingOffer) {
         this.resultingOrder = resultingOffer;
+    }
+
+    public ElementEntity getOrderObject() {
+        return orderObject;
+    }
+
+    public void setOrderObject(ElementEntity orderObject) {
+        this.orderObject = orderObject;
     }
 }

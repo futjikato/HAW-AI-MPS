@@ -30,5 +30,10 @@
         <mapping class="de.haw.mps.fabrication.entity.AssemblyOrderEntity" />
         <mapping class="de.haw.mps.fabrication.entity.AssemblyPlanEntity" />
         <mapping class="de.haw.mps.fabrication.entity.ElementEntity" />
+
+        <!-- Offer -->
+        <mapping class="de.haw.mps.offer.entity.CustomerEntity" />
+        <mapping class="de.haw.mps.offer.entity.OfferEntity" />
+        <mapping class="de.haw.mps.offer.entity.OrderEntity" />
     </session-factory>
 </hibernate-configuration>

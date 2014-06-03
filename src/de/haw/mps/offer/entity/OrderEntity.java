@@ -9,8 +9,8 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Set;
 
-@Entity(name = "Offer")
-@Table(appliesTo = "Offer")
+@Entity(name = "ROrder")
+@Table(appliesTo = "ROrder")
 public class OrderEntity implements Serializable {
 
     @Id
@@ -18,7 +18,7 @@ public class OrderEntity implements Serializable {
     @GenericGenerator(name = "idGen", strategy = "increment")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     @Cascade({ org.hibernate.annotations.CascadeType.ALL })
     private Set<OfferEntity> offers;
 
