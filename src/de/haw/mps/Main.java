@@ -14,7 +14,7 @@ public class Main {
       Session factory = MpsSessionFactory.getcurrentSession();
 
       try {
-          TcpServer server = new TcpServer(8089);
+          TcpServer server = new TcpServer(Integer.valueOf(args[0]));
           server.start();
       } catch (IOException e) {
           MpsLogger.getLogger().severe(e.getMessage());
