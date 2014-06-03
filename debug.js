@@ -48,6 +48,9 @@ function loop(client) {
 
 		var offset = writeStr(action, 0);
 
+        buf.writeInt32BE(9999, offset);
+        offset += 4;
+
 		buf.writeInt32BE(params.length, offset);
 		offset += 4;
 
@@ -66,12 +69,26 @@ function loop(client) {
 
 function readOnce(client, cb) {
 	client.once('data', function(buf) {
+        var offset = 0;
 
-		var statusCode = buf.readInt32BE(0);
+		var statusCode = buf.readInt32BE(offset);
 		console.log('Status ', statusCode);
+        offset += 4;
+
+        var responseNameLength = buf.readInt32BE(offset);
+        offset += 4;
+        var responseName = buf.toString('utf8', offset, offset + responseNameLength);
+        console.log('response name', responseName);
+        offset += responseNameLength;
+
+        var userCode = buf.readInt32BE(offset);
+        console.log('UserID ', userCode);
+        offset += 4;
 		
-		var paramCount = buf.readInt32BE(4);
-		var offsetBase = 8; 
+		var paramCount = buf.readInt32BE(offset);
+        offset += 4;
+
+		var offsetBase = offset;
 		for(var i = 0 ; i < paramCount ; i++) {
 			var strLength = buf.readInt32BE(offsetBase + (i * 4));
 			var strStart = offsetBase + (i * 4) + 4;
