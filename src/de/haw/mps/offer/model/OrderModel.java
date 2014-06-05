@@ -38,21 +38,17 @@ public class OrderModel extends AbstractModel<OrderEntity> {
         return createOrder(offers, orderDate, shippingDate, invoiceDate);
     }
 
-    public OrderEntity createOrder(Calendar orderDate, Calendar shippingDate, Calendar invoiceDate) {
-        return createOrder(new HashSet<OfferEntity>(), orderDate, shippingDate, invoiceDate);
-    }
-
-    public OrderEntity createOrder(Calendar orderDate, Calendar shippingDate) {
+    public OrderEntity createOrder(OfferEntity offer, Calendar orderDate, Calendar shippingDate) {
         Calendar invoiceDate = new GregorianCalendar();
         invoiceDate.add(GregorianCalendar.DAY_OF_MONTH, DEFAULT_INVOIDEDAYS);
 
-        return createOrder(orderDate, shippingDate, invoiceDate);
+        return createOrder(offer, orderDate, shippingDate, invoiceDate);
     }
 
-    public OrderEntity createOrder(Calendar orderDate) {
+    public OrderEntity createOrder(OfferEntity offer, Calendar orderDate) {
         Calendar shippingDate = new GregorianCalendar();
         shippingDate.add(GregorianCalendar.DAY_OF_MONTH, DEFAULT_SHIPPINGDAYS);
 
-        return createOrder(orderDate, shippingDate);
+        return createOrder(offer, orderDate, shippingDate);
     }
 }
