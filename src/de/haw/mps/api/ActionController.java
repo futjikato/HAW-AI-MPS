@@ -1,5 +1,7 @@
 package de.haw.mps.api;
 
+import de.haw.mps.MpsLogger;
+
 import java.util.Observable;
 import java.util.Observer;
 
@@ -16,6 +18,7 @@ public abstract class ActionController implements Observer {
     }
 
     public static Response createResponse(final String responseAction, final ResponseCode responseCode, final String[] data) {
+        MpsLogger.getLogger().info(String.format("[RESPONSE] - %s | %s", responseCode, responseAction));
         return new Response() {
             @Override
             public String getResponseName() {

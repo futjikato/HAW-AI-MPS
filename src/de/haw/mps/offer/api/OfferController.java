@@ -18,6 +18,7 @@ import de.haw.mps.persistence.WorkflowException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -181,19 +182,24 @@ public class OfferController extends ActionController {
                 try {
                     offerEntity = model.get(id);
                 } catch (WorkflowException e) {
+                    transaction.rollback();
                     return ActionController.createResponse(ResponseCode.NOTFOUND, new String[]{"Offer not found."});
                 }
 
                 // check if already ordered
                 if(offerEntity.getResultingOrder() != null) {
+                    transaction.rollback();
                     return ActionController.createResponse(ResponseCode.ALREADYDONE, new String[]{"Offer has already been ordered."});
                 }
 
                 OrderModel orderModel = new OrderModel();
                 OrderEntity orderEntity = orderModel.createOrder(offerEntity, new GregorianCalendar());
                 try {
+                    offerEntity.setResultingOrder(orderEntity);
+                    model.update(offerEntity);
                     orderModel.add(orderEntity);
                 } catch (WorkflowException e) {
+                    transaction.rollback();
                     MpsLogger.getLogger().severe(e.getMessage());
                     return ActionController.createResponse(ResponseCode.ERROR, new String[]{"Unable to save order."});
                 }
@@ -205,9 +211,13 @@ public class OfferController extends ActionController {
                     return ActionController.createResponse(ResponseCode.ERROR, new String[]{"Unable to commit transaction."});
                 }
 
+                SimpleDateFormat formatter = new SimpleDateFormat("DD-MMM-yyyy HH:mm");
                 return ActionController.createResponse("new_order", ResponseCode.OK, new String[]{
                     String.valueOf(orderEntity.getId()),
-                    String.valueOf(offerEntity.getId())
+                    String.valueOf(offerEntity.getId()),
+                    formatter.format(orderEntity.getOrderDate().getTime()),
+                    formatter.format(orderEntity.getShippingDate().getTime()),
+                    formatter.format(orderEntity.getInvoiceDate().getTime())
                 });
             }
         };

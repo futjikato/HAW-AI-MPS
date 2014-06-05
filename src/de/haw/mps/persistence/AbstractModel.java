@@ -78,7 +78,6 @@ public abstract class AbstractModel<T extends Serializable> {
 
         try {
             session.update(entity);
-            transaction.commit();
             return true;
         } catch (Exception e) {
             throw new WorkflowException(e);
