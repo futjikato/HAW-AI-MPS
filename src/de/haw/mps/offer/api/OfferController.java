@@ -174,21 +174,28 @@ public class OfferController extends ActionController {
                 Long id = Long.valueOf(params[0]);
 
                 OfferModel model = new OfferModel();
-                Session session = MpsSessionFactory.getcurrentSession();
-                Transaction transaction = session.beginTransaction();
+                model.startTransaction();
 
                 // load offer
                 OfferEntity offerEntity;
                 try {
                     offerEntity = model.get(id);
                 } catch (WorkflowException e) {
-                    transaction.rollback();
+                    try {
+                        model.rollbackTransaction();
+                    } catch (WorkflowException e1) {
+                        // already logged in model
+                    }
                     return ActionController.createResponse(ResponseCode.NOTFOUND, new String[]{"Offer not found."});
                 }
 
                 // check if already ordered
                 if(offerEntity.getResultingOrder() != null) {
-                    transaction.rollback();
+                    try {
+                        model.rollbackTransaction();
+                    } catch (WorkflowException e) {
+                        // already logged in model
+                    }
                     return ActionController.createResponse(ResponseCode.ALREADYDONE, new String[]{"Offer has already been ordered."});
                 }
 
@@ -199,15 +206,20 @@ public class OfferController extends ActionController {
                     model.update(offerEntity);
                     orderModel.add(orderEntity);
                 } catch (WorkflowException e) {
-                    transaction.rollback();
+                    // at least try a rollback
+                    try {
+                        model.rollbackTransaction();
+                    } catch (WorkflowException e1) {
+                        // already logged in model
+                    }
+
                     MpsLogger.getLogger().severe(e.getMessage());
                     return ActionController.createResponse(ResponseCode.ERROR, new String[]{"Unable to save order."});
                 }
 
                 try {
-                    transaction.commit();
-                } catch(Exception e) {
-                    MpsLogger.getLogger().severe(e.getMessage());
+                    model.commitTransaction();
+                } catch(WorkflowException e) {
                     return ActionController.createResponse(ResponseCode.ERROR, new String[]{"Unable to commit transaction."});
                 }
 

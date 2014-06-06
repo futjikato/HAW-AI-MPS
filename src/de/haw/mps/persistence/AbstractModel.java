@@ -35,6 +35,7 @@ public abstract class AbstractModel<T extends Serializable> {
             Transaction transaction = session.getTransaction();
             transaction.commit();
         } catch (Exception e) {
+            MpsLogger.getLogger().severe(String.format("Commit transaction failed! %s", e.getMessage()));
             throw new WorkflowException(e);
         }
     }
@@ -49,6 +50,7 @@ public abstract class AbstractModel<T extends Serializable> {
             Transaction transaction = session.getTransaction();
             transaction.rollback();
         } catch (Exception e) {
+            MpsLogger.getLogger().severe(String.format("Rollback failed! %s", e.getMessage()));
             throw new WorkflowException(e);
         }
     }
