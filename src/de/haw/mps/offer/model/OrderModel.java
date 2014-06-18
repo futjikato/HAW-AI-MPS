@@ -3,11 +3,13 @@ package de.haw.mps.offer.model;
 import de.haw.mps.offer.entity.OfferEntity;
 import de.haw.mps.offer.entity.OrderEntity;
 import de.haw.mps.persistence.AbstractModel;
+import de.haw.mps.persistence.MpsSessionFactory;
+import de.haw.mps.persistence.WorkflowException;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class OrderModel extends AbstractModel<OrderEntity> {
 
@@ -50,5 +52,16 @@ public class OrderModel extends AbstractModel<OrderEntity> {
         shippingDate.add(GregorianCalendar.DAY_OF_MONTH, DEFAULT_SHIPPINGDAYS);
 
         return createOrder(offer, orderDate, shippingDate);
+    }
+
+    public List getOrders() throws WorkflowException {
+        Session session = MpsSessionFactory.getcurrentSession();
+        Transaction transaction = session.getTransaction();
+        if(transaction == null || !transaction.isActive()) {
+            throw new WorkflowException("No transaction running while trying to get object.");
+        }
+
+        Criteria crit = session.createCriteria(OrderEntity.class);
+        return crit.list();
     }
 }

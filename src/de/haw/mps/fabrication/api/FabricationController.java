@@ -45,6 +45,13 @@ public class FabricationController extends ActionController {
             public Response process(Request request) {
                 return ActionController.createResponse(ResponseCode.BADREQUEST, new String[]{"Not yet implemented."});
             }
+        },
+
+        ADD_PLAN {
+            @Override
+            public Response process(Request request) {
+                return null;
+            }
         };
 
         public abstract Response process(Request request);

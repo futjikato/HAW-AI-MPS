@@ -7,6 +7,7 @@ import org.hibernate.annotations.Table;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "ROrder")
@@ -20,7 +21,7 @@ public class OrderEntity implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY)
     @Cascade({ org.hibernate.annotations.CascadeType.ALL })
-    private Set<OfferEntity> offers;
+    private Set<OfferEntity> offers = new HashSet<OfferEntity>();
 
     @Column
     private Calendar orderDate;

@@ -21,6 +21,8 @@ import org.hibernate.Transaction;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
 
 public class OfferController extends ActionController {
 
@@ -217,20 +219,48 @@ public class OfferController extends ActionController {
                     return ActionController.createResponse(ResponseCode.ERROR, new String[]{"Unable to save order."});
                 }
 
+                String[] resultParams = OrderHelper.getApiParameter(orderEntity);
+
                 try {
                     model.commitTransaction();
                 } catch(WorkflowException e) {
                     return ActionController.createResponse(ResponseCode.ERROR, new String[]{"Unable to commit transaction."});
                 }
 
-                SimpleDateFormat formatter = new SimpleDateFormat("DD-MMM-yyyy HH:mm");
-                return ActionController.createResponse("new_order", ResponseCode.OK, new String[]{
-                    String.valueOf(orderEntity.getId()),
-                    String.valueOf(offerEntity.getId()),
-                    formatter.format(orderEntity.getOrderDate().getTime()),
-                    formatter.format(orderEntity.getShippingDate().getTime()),
-                    formatter.format(orderEntity.getInvoiceDate().getTime())
-                });
+                return ActionController.createResponse("new_order", ResponseCode.OK, resultParams);
+            }
+        },
+
+        GET_ORDERS() {
+            @Override
+            public Response process(Request request) {
+                try {
+                    OrderModel model = new OrderModel();
+                    model.startTransaction();
+                    List orders = model.getOrders();
+
+                    String[] params = new String[0];
+                    for(Object entity : orders) {
+                        if(entity instanceof OrderEntity) {
+                            OrderEntity orderEntity = (OrderEntity)entity;
+
+                            String[] entityParams = OrderHelper.getApiParameter(orderEntity);
+
+                            // concat entityParams array to params
+                            String[] newParams = new String[params.length + entityParams.length];
+                            System.arraycopy(params, 0, newParams, 0, params.length);
+                            System.arraycopy(entityParams, 0, newParams, params.length, entityParams.length);
+                            params = newParams;
+                        }
+                    }
+
+                    model.commitTransaction();
+
+                    return ActionController.createResponse("orders", ResponseCode.OK, params);
+                } catch (Exception e) {
+                    MpsLogger.getLogger().log(Level.SEVERE, "Error loading orders", e);
+                    return ActionController.createResponse(ResponseCode.ERROR, new String[]{"Unable to load orders."});
+                }
             }
         };
 
