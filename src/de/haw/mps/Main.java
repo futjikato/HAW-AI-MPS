@@ -1,7 +1,10 @@
 package de.haw.mps;
 
+import de.haw.mps.api.ExternalApiManager;
 import de.haw.mps.api.Hub;
 import de.haw.mps.api.TcpServer;
+import de.haw.mps.banking.messaging.MessageConsumer;
+import de.haw.mps.banking.messaging.MessageService;
 import de.haw.mps.fabrication.api.FabricationController;
 import de.haw.mps.offer.api.OfferController;
 import de.haw.mps.persistence.MpsSessionFactory;
@@ -24,6 +27,18 @@ public class Main {
       // Add Controllers to Api
       Hub.getInstance().addObserver(new FabricationController());
       Hub.getInstance().addObserver(new OfferController());
+
+      ExternalApiManager externalApiManager = new ExternalApiManager();
+
+      MessageService.getInstance().addObserver(externalApiManager);
+
+      // start banking message queue consumer
+      try {
+          MessageConsumer messageConsumer = new MessageConsumer();
+          messageConsumer.start();
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
   }
 
 }

@@ -15,7 +15,7 @@ import java.util.logging.Level;
 
 public class TcpServer extends Thread {
 
-    private static final int THREADPOOL_SIZE = 10;
+    public static final int THREADPOOL_SIZE = 10;
 
     private ServerSocket serverSocket;
 
@@ -46,6 +46,7 @@ public class TcpServer extends Thread {
             public void run() {
                 try {
                     Client client = new Client(clientSocket);
+                    
                     while(!isInterrupted()) {
                         Request request = RequestParser.parse(client, clientSocket.getInputStream());
                         Api api = Api.getInstance();
