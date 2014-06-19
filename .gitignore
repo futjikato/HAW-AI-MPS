@@ -6,3 +6,4 @@ src/hibernate.cfg.xml
 .DS_Store
 mps_log.txt*
 *.iml
+target
