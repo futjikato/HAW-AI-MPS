@@ -1,5 +1,7 @@
 package de.haw.mps.api;
 
+import de.haw.mps.api.network.client.Client;
+
 public abstract class Request {
 
     private Response response;

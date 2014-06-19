@@ -19,6 +19,8 @@ public final class MessageConsumer extends Thread {
     public MessageConsumer() throws IOException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
+        factory.setUsername("admin");
+        factory.setPassword("admin");
 
         connection = factory.newConnection();
         Channel channel = connection.createChannel();

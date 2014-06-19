@@ -1,33 +1,34 @@
 package de.haw.mps.api;
 
-import java.util.ArrayList;
+import de.haw.mps.api.network.client.Client;
+
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-public final class ExternalApiManager implements Observer{
+public final class ExternalApiManager implements Observer {
 
-    private List<Client> clientList;
+    private List<Client> clientList = new CopyOnWriteArrayList<Client>();
 
-    private Lock lock;
+    private static ExternalApiManager instance;
 
-    public ExternalApiManager() {
-        lock = new ReentrantLock();
-        clientList = new ArrayList<Client>();
+    public static ExternalApiManager getInstance() {
+        if(instance == null) {
+            instance = new ExternalApiManager();
+        }
+
+        return instance;
     }
 
+    private ExternalApiManager() { }
+
     public void addClient(Client client) {
-        lock.lock();
         clientList.add(client);
-        lock.unlock();
     }
 
     public void removeClient(Client client) {
-        lock.lock();
         clientList.remove(client);
-        lock.unlock();
     }
 
     @Override
@@ -37,18 +38,10 @@ public final class ExternalApiManager implements Observer{
         }
 
         if(o instanceof ExternalRequestProvider) {
-            ExternalRequestProvider requestProvider = (ExternalRequestProvider) arg;
-            publish(requestProvider);
+            for(Client client : clientList) {
+                ExternalRequestProvider requestProvider = (ExternalRequestProvider) arg;
+                client.handle(requestProvider.createRequest(client));
+            }
         }
-    }
-
-    private void publish(ExternalRequestProvider requestProvider) {
-        for(Client client : clientList) {
-            Request request = requestProvider.createRequest(client);
-        }
-    }
-
-    private void publish(Response response) {
-
     }
 }

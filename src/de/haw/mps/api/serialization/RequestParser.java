@@ -1,7 +1,7 @@
 package de.haw.mps.api.serialization;
 
 import de.haw.mps.MpsLogger;
-import de.haw.mps.api.Client;
+import de.haw.mps.api.network.client.Client;
 import de.haw.mps.api.Request;
 
 import java.io.*;

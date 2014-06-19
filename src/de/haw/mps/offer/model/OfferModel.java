@@ -33,12 +33,9 @@ public class OfferModel extends AbstractModel<OfferEntity> {
 
     public List getOffers() {
         Session session = MpsSessionFactory.getcurrentSession();
-        Transaction transaction = session.beginTransaction();
 
         Criteria crit = session.createCriteria(OfferEntity.class);
         List offers = crit.list();
-
-        transaction.commit();
 
         return offers;
     }

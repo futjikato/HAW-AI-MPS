@@ -1,6 +1,6 @@
 package de.haw.mps.banking.messaging;
 
-import de.haw.mps.api.Client;
+import de.haw.mps.api.network.client.Client;
 import de.haw.mps.api.ExternalRequestProvider;
 import de.haw.mps.api.Request;
 

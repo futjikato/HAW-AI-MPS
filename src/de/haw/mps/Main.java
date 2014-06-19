@@ -2,7 +2,7 @@ package de.haw.mps;
 
 import de.haw.mps.api.ExternalApiManager;
 import de.haw.mps.api.Hub;
-import de.haw.mps.api.TcpServer;
+import de.haw.mps.api.network.TcpServer;
 import de.haw.mps.banking.messaging.MessageConsumer;
 import de.haw.mps.banking.messaging.MessageService;
 import de.haw.mps.fabrication.api.FabricationController;
@@ -11,6 +11,7 @@ import de.haw.mps.persistence.MpsSessionFactory;
 import org.hibernate.Session;
 
 import java.io.IOException;
+import java.util.logging.Level;
 
 public class Main {
 
@@ -28,7 +29,7 @@ public class Main {
       Hub.getInstance().addObserver(new FabricationController());
       Hub.getInstance().addObserver(new OfferController());
 
-      ExternalApiManager externalApiManager = new ExternalApiManager();
+      ExternalApiManager externalApiManager = ExternalApiManager.getInstance();
 
       MessageService.getInstance().addObserver(externalApiManager);
 
@@ -37,7 +38,7 @@ public class Main {
           MessageConsumer messageConsumer = new MessageConsumer();
           messageConsumer.start();
       } catch (IOException e) {
-          e.printStackTrace();
+          MpsLogger.getLogger().log(Level.WARNING, "Message queue error.", e);
       }
   }
 

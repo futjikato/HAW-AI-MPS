@@ -90,6 +90,9 @@ public class OfferController extends ActionController {
             @Override
             public Response process(Request request) {
                 try {
+                    Session session = MpsSessionFactory.getcurrentSession();
+                    Transaction transaction = session.beginTransaction();
+
                     OfferModel model = new OfferModel();
                     List customers = model.getOffers();
 
@@ -111,9 +114,11 @@ public class OfferController extends ActionController {
                         }
                     }
 
+                    transaction.commit();
+
                     return ActionController.createResponse("offers", ResponseCode.OK, params);
                 } catch (Exception e) {
-                    MpsLogger.getLogger().severe(e.getMessage());
+                    MpsLogger.getLogger().log(Level.WARNING, "Unable to load offers", e);
                     return ActionController.createResponse(ResponseCode.ERROR, new String[]{"Unable to load offers."});
                 }
             }
