@@ -16,8 +16,10 @@ import java.util.logging.Level;
 public class Main {
 
   public static void main(String[] args) {
-      Session factory = MpsSessionFactory.getcurrentSession();
+      // initialize db setup
+      MpsSessionFactory.getcurrentSession();
 
+      // start tcp server
       try {
           TcpServer server = new TcpServer(Integer.valueOf(args[0]));
           server.start();
@@ -29,8 +31,10 @@ public class Main {
       Hub.getInstance().addObserver(new FabricationController());
       Hub.getInstance().addObserver(new OfferController());
 
+      // initialize external api manager
       ExternalApiManager externalApiManager = ExternalApiManager.getInstance();
 
+      // add
       MessageService.getInstance().addObserver(externalApiManager);
 
       // start banking message queue consumer

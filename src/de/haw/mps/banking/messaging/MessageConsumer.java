@@ -18,7 +18,7 @@ public final class MessageConsumer extends Thread {
 
     public MessageConsumer() throws IOException {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
+        factory.setHost("127.0.0.1");
         factory.setUsername("admin");
         factory.setPassword("admin");
 

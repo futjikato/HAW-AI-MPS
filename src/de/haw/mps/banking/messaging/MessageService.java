@@ -5,11 +5,6 @@ import java.util.AbstractQueue;
 import java.util.Observable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-/**
- * @author moritzspindelhirn
- * @todo Documentation
- * @category de.haw.mps.banking
- */
 public class MessageService extends Observable {
 
     private static MessageService instance;

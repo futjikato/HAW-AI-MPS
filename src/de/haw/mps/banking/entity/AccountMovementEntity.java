@@ -7,8 +7,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
 
-@Entity(name = "Element")
-@Table(appliesTo = "Element")
+@Entity(name = "AccountMovement")
+@Table(appliesTo = "AccountMovement")
 public class AccountMovementEntity implements Serializable {
 
     @Id
@@ -21,6 +21,9 @@ public class AccountMovementEntity implements Serializable {
 
     @Column
     private int amount;
+
+    @Column
+    private String message;
 
     public Long getId() {
         return id;
@@ -40,5 +43,13 @@ public class AccountMovementEntity implements Serializable {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

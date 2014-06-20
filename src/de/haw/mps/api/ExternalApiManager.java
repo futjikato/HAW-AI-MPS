@@ -1,5 +1,6 @@
 package de.haw.mps.api;
 
+import de.haw.mps.MpsLogger;
 import de.haw.mps.api.network.client.Client;
 
 import java.util.List;
@@ -33,15 +34,53 @@ public final class ExternalApiManager implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if(arg == null) {
-            return;
-        }
-
         if(o instanceof ExternalRequestProvider) {
+            MpsLogger.getLogger().info("Processing external request");
             for(Client client : clientList) {
                 ExternalRequestProvider requestProvider = (ExternalRequestProvider) arg;
                 client.handle(requestProvider.createRequest(client));
             }
+
+            return;
         }
+
+        if(o instanceof ExternalResponseProvider) {
+            MpsLogger.getLogger().info("Processing external response");
+            for(Client client : clientList) {
+                ExternalResponseProvider responseProvider = (ExternalResponseProvider) arg;
+                Request request = getMockRequest(client);
+                request.setResponse(responseProvider.createResponse(client));
+
+                client.handle(request);
+            }
+
+            return;
+        }
+
+        MpsLogger.getLogger().info("External api update ignored");
+    }
+
+    private Request getMockRequest(final Client client) {
+        return new Request() {
+            @Override
+            public Client getClient() {
+                return client;
+            }
+
+            @Override
+            public String requestedAction() {
+                return null;
+            }
+
+            @Override
+            public String[] getParameters() {
+                return new String[0];
+            }
+
+            @Override
+            public int getUserId() {
+                return 0;
+            }
+        };
     }
 }

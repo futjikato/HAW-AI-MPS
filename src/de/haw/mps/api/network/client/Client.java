@@ -62,12 +62,16 @@ public class Client extends Thread {
 
     public void handle(Request request) {
         increaseRequestCounter();
-        Api api = Api.getInstance();
-        try {
-            api.processRequest(request);
-            writer.queueAnsweredRequest(request);
-        } catch (ProcessException e) {
-            MpsLogger.getLogger().log(Level.SEVERE, "Failed to process request.", e);
+
+        if(request.getResponse() == null) {
+            try {
+                Api api = Api.getInstance();
+                api.processRequest(request);
+            } catch (ProcessException e) {
+                MpsLogger.getLogger().log(Level.SEVERE, "Failed to process request.", e);
+            }
         }
+
+        writer.queueAnsweredRequest(request);
     }
 }

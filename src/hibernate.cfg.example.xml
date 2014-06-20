@@ -35,5 +35,8 @@
         <mapping class="de.haw.mps.offer.entity.CustomerEntity" />
         <mapping class="de.haw.mps.offer.entity.OfferEntity" />
         <mapping class="de.haw.mps.offer.entity.OrderEntity" />
+
+        <!-- Banking -->
+        <mapping class="de.haw.mps.banking.entity.AccountMovementEntity" />
     </session-factory>
 </hibernate-configuration>
