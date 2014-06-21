@@ -58,7 +58,9 @@ public final class BankMessage implements ExternalResponseProvider {
         amount = bb.getInt();
 
         int msgStrLength = bb.getInt();
-        msg = String.valueOf(bb.get(new byte[msgStrLength]));
+        byte[] msgBytes = new byte[msgStrLength];
+        bb.get(msgBytes);
+        msg = new String(msgBytes);
     }
 
     @Override

@@ -34,7 +34,7 @@ public final class ExternalApiManager implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if(o instanceof ExternalRequestProvider) {
+        if(arg instanceof ExternalRequestProvider) {
             MpsLogger.getLogger().info("Processing external request");
             for(Client client : clientList) {
                 ExternalRequestProvider requestProvider = (ExternalRequestProvider) arg;
@@ -44,7 +44,7 @@ public final class ExternalApiManager implements Observer {
             return;
         }
 
-        if(o instanceof ExternalResponseProvider) {
+        if(arg instanceof ExternalResponseProvider) {
             MpsLogger.getLogger().info("Processing external response");
             for(Client client : clientList) {
                 ExternalResponseProvider responseProvider = (ExternalResponseProvider) arg;
