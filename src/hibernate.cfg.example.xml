@@ -38,5 +38,7 @@
 
         <!-- Banking -->
         <mapping class="de.haw.mps.banking.entity.AccountMovementEntity" />
+        <!-- Transport -->
+        <mapping class="de.haw.mps.transport.entity.TransportEntity" />
     </session-factory>
 </hibernate-configuration>

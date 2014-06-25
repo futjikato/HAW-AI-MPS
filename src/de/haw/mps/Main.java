@@ -8,6 +8,7 @@ import de.haw.mps.banking.messaging.MessageService;
 import de.haw.mps.fabrication.api.FabricationController;
 import de.haw.mps.offer.api.OfferController;
 import de.haw.mps.persistence.MpsSessionFactory;
+import de.haw.mps.transport.api.TransportController;
 import org.hibernate.Session;
 
 import java.io.IOException;
@@ -30,6 +31,7 @@ public class Main {
       // Add Controllers to Api
       Hub.getInstance().addObserver(new FabricationController());
       Hub.getInstance().addObserver(new OfferController());
+      Hub.getInstance().addObserver(new TransportController());
 
       // initialize external api manager
       ExternalApiManager externalApiManager = ExternalApiManager.getInstance();

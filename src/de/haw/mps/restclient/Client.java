@@ -28,14 +28,14 @@ public class Client {
         });
     }
 
-    public HttpResponse query(GenericUrl url, String method) throws IOException {
+    public HttpRequest getRequest(GenericUrl url, String method) throws IOException {
         HttpRequest request = requestFactory.buildGetRequest(url);
         request.setRequestMethod(method);
 
-        return request.execute();
+        return request;
     }
 
-    public HttpResponse query(GenericUrl url) throws IOException {
-        return query(url, "GET");
+    public HttpRequest post(GenericUrl url, HttpContent content) throws IOException {
+        return requestFactory.buildPostRequest(url, content);
     }
 }
